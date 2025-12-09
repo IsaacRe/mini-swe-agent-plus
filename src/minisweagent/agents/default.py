@@ -63,6 +63,7 @@ class DefaultAgent:
 
     def render_template(self, template: str, **kwargs) -> str:
         template_vars = asdict(self.config) | self.env.get_template_vars() | self.model.get_template_vars()
+        template_vars["working_dir"] = template_vars.get("working_dir", template_vars["cwd"])
         return Template(template, undefined=StrictUndefined).render(
             **kwargs, **template_vars, **self.extra_template_vars
         )
